@@ -21,5 +21,7 @@
     bottom: 0;
 
     box-shadow: 0px -3px 1px rgba(100,100,100,.2);
+
+    z-index: 10;
   }
 </style>

@@ -1,13 +1,15 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物车</div></nav-bar>
-    <home-swiper :banners="banners"></home-swiper>
-    <recommend-view :recommends="recommends"></recommend-view>
-    <feature-view></feature-view>
-    <tab-control class="tab-control"
-                 :titles="['流行','新款','精选']"
-                 @tabControl="tabControl"></tab-control>
-    <goods-list :goods="goods[currentType].list"></goods-list>
+    <scroll class="scroll-content">
+      <home-swiper :banners="banners"></home-swiper>
+      <recommend-view :recommends="recommends"></recommend-view>
+      <feature-view></feature-view>
+      <tab-control class="tab-control"
+                   :titles="['流行','新款','精选']"
+                   @tabControl="tabControl"></tab-control>
+      <goods-list :goods="showGoods"></goods-list>
+    </scroll>
   </div>
 </template>
 
@@ -18,6 +20,7 @@
   import FeatureView from './childComps/FeatureView'
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodsList from 'components/content/goods/GoodsList'
+  import Scroll from 'components/common/scroll/Scroll'
 
   import {getHomeMultidata,getHomeGoods} from 'network/home'
 
@@ -29,7 +32,8 @@
       RecommendView,
       FeatureView,
       TabControl,
-      GoodsList
+      GoodsList,
+      Scroll
     },
     data() {
       return {/*data中的定义的属性，通过在网络请求中得到的数据中，查找需要的的数据资源进行定义*/
@@ -41,6 +45,11 @@
           'sell': {page: 0,list: []}
         },
         currentType: 'pop'
+      }
+    },
+    computed: {
+      showGoods() {
+        return this.goods[this.currentType].list
       }
     },
     created() {
@@ -94,6 +103,8 @@
 <style scoped>
   #home {
     padding-top: 44px;
+    height: 100vh;
+    position: relative;
   }
 
   .home-nav {
@@ -109,7 +120,19 @@
   }
 
   .tab-control {
-    position: sticky;
+    position: sticky;/*停留效果*/
     top: 44px;
+
+    z-index: 5;
+  }
+
+  .scroll-content {
+    overflow: hidden;
+
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
   }
 </style>
