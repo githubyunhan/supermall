@@ -34,7 +34,7 @@ refs如果绑定在普通元素（标签）中，那么通过this.$refs.refsname
 
       /*监听滚动的位置*/
       this.scroll.on('scroll',(position) => {
-
+        this.$emit("scrollPosition",position)
       })
     },
     methods: {

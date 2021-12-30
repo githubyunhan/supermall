@@ -1,7 +1,10 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物车</div></nav-bar>
-    <scroll class="scroll-content" ref="topScroll" :probe-type="3">
+    <scroll class="scroll-content"
+            ref="topScroll"
+            :probe-type="3"
+            @scrollPosition="contentScroll">
       <home-swiper :banners="banners"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -10,7 +13,7 @@
                    @tabControl="tabControl"></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
-    <back-top @click.native="backClick"></back-top>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -47,7 +50,8 @@
           'new': {page: 0,list: []},
           'sell': {page: 0,list: []}
         },
-        currentType: 'pop'
+        currentType: 'pop',
+        isShowBackTop: false
       }
     },
     computed: {
@@ -81,8 +85,11 @@
         }
       },
       backClick() {
-        console.log(this.$refs.topScroll);
+        /*console.log(this.$refs.topScroll);*/
         this.$refs.topScroll.scrollTo(0,0);
+      },
+      contentScroll(position) {
+        this.isShowBackTop = (-position.y) > 1000;
       },
 
       /*网络请求相关的方法*/
