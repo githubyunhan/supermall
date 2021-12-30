@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物车</div></nav-bar>
-    <scroll class="scroll-content" ref="topScroll">
+    <scroll class="scroll-content" ref="topScroll" :probe-type="3">
       <home-swiper :banners="banners"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -141,4 +141,10 @@
     left: 0;
     right: 0;
   }
+
+  /*.scroll-content {
+    height: calc(100% - 93px);
+    overflow: hidden;
+    margin-top: 44px;
+  }*/
 </style>
