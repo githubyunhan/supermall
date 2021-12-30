@@ -4,7 +4,9 @@
     <scroll class="scroll-content"
             ref="topScroll"
             :probe-type="3"
-            @scrollPosition="contentScroll">
+            @scrollPosition="contentScroll"
+            :pull-up-load="true"
+            @pullingUp="loadMore">
       <home-swiper :banners="banners"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -91,6 +93,12 @@
       contentScroll(position) {
         this.isShowBackTop = (-position.y) > 1000;
       },
+      loadMore() {
+        console.log('加载更多')
+        this.getHomeGoods1(this.currentType)
+
+        this.$refs.topScroll.scroll.refresh()/*重新急速需要滚动内容的大小*/
+      },
 
       /*网络请求相关的方法*/
       getHomeMultidata1() {
@@ -104,7 +112,9 @@
         const page = this.goods[type].page+1;
         getHomeGoods(type,page).then(res => {
           this.goods[type].list.push(...res.data.list);
-          this.goods[type].page +=1
+          this.goods[type].page +=1;
+
+          this.$refs.topScroll.finishPullUp()
         })
       }
     },
