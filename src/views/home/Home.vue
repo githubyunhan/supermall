@@ -31,6 +31,8 @@
 
   import {getHomeMultidata,getHomeGoods} from 'network/home'
 
+  import {debounce} from 'common/utils'
+
   export default {
     name: "Home",
     components: {
@@ -75,7 +77,7 @@
       /*this.$bus.$on('itemImageLoad',() => {
         this.$refs.topScroll.refresh()
       })*/
-      const  refresh = this.debounce(this.$refs.topScroll.refresh(),200);
+      const  refresh = debounce(this.$refs.topScroll.refresh(),200);
       this.$bus.$on('itemImageLoad',() => {
        refresh()
       })
@@ -106,15 +108,6 @@
       loadMore() {
         console.log('加载更多')
         this.getHomeGoods1(this.currentType)
-      },
-      debounce(func,delay) {/*防抖函数*/
-        let timer = null;
-        return function (...args) {
-          if (timer) clearTimeout(timer);
-          timer = setTimeout(() => {
-            func.apply(this,args)
-          },delay)
-        }
       },
 
       /*网络请求相关的方法*/
