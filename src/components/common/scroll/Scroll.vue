@@ -49,11 +49,15 @@ refs如果绑定在普通元素（标签）中，那么通过this.$refs.refsname
     },
     methods: {
       scrollTo(x,y,time=300) {
-        this.scroll.scrollTo(x,y,time);
+        this.scroll && this.scroll.scrollTo(x,y,time);
       },
       finishPullUp() {
         this.scroll.finishPullUp()
+      },
+      refresh() {
+        this.scroll && this.scroll.refresh()
       }
+
     }
   }
 </script>

@@ -70,6 +70,12 @@
       this.getHomeGoods1('new');
       this.getHomeGoods1('sell')
     },
+    mounted() {
+      /*3.通过事件总线监听图片加载完成*/
+      this.$bus.$on('itemImageLoad',() => {
+        this.$refs.topScroll.refresh()
+      })
+    },
     methods: {
       /*事件监听相关的方法*/
       tabControl(index) {
@@ -96,8 +102,6 @@
       loadMore() {
         console.log('加载更多')
         this.getHomeGoods1(this.currentType)
-
-        this.$refs.topScroll.scroll.refresh()/*重新急速需要滚动内容的大小*/
       },
 
       /*网络请求相关的方法*/
@@ -117,8 +121,6 @@
           this.$refs.topScroll.finishPullUp()
         })
       }
-    },
-    mounted() {
     }
   }
 </script>
