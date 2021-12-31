@@ -1,18 +1,25 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物车</div></nav-bar>
+    <tab-control class="tab-control"
+                 :titles="['流行','新款','精选']"
+                 @tabControl="tabControl"
+                 ref="tabControl1"
+                 v-show="isTabFixed"></tab-control>
     <scroll class="scroll-content"
             ref="topScroll"
             :probe-type="3"
             @scrollPosition="contentScroll"
             :pull-up-load="true"
             @pullingUp="loadMore">
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners"
+                   @swiperImageLoad="swiperImageLoad"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
       <tab-control class="tab-control"
                    :titles="['流行','新款','精选']"
-                   @tabControl="tabControl"></tab-control>
+                   @tabControl="tabControl"
+                   ref="tabControl2"></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
@@ -55,7 +62,9 @@
           'sell': {page: 0,list: []}
         },
         currentType: 'pop',
-        isShowBackTop: false
+        isShowBackTop: false,
+        topOffsetTop: 0,
+        isTabFixed: false
       }
     },
     computed: {
@@ -97,17 +106,28 @@
             this.currentType = 'sell';
             break
         }
+        /*保证两个组件效果相同*/
+        this.$refs.tabControl1.currentIndex=index;
+        this.$refs.tabControl2.currentIndex=index;
       },
       backClick() {
         /*console.log(this.$refs.topScroll);*/
         this.$refs.topScroll.scrollTo(0,0);
       },
       contentScroll(position) {
+        /*1.判断BackTop是否显示*/
         this.isShowBackTop = (-position.y) > 1000;
+
+        /*2.决定tobControl是否吸顶*/
+        this.isTabFixed = (-position.y) > this.topOffsetTop;
       },
       loadMore() {
         console.log('加载更多')
         this.getHomeGoods1(this.currentType)
+      },
+      swiperImageLoad() {
+        console.log(this.$refs.tabControl2.$el.offsetTop);
+        this.topOffsetTop= this.$refs.tabControl2.$el.offsetTop
       },
 
       /*网络请求相关的方法*/
@@ -142,6 +162,7 @@
     background-color: var(--color-tint);
     color: #fff;
 
+    /*在使用浏览器原生滚动时，为了让导航不跟随一起滚动*/
     position: fixed;
     left: 0;
     right: 0;
