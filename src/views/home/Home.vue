@@ -72,8 +72,12 @@
     },
     mounted() {
       /*3.通过事件总线监听图片加载完成*/
-      this.$bus.$on('itemImageLoad',() => {
+      /*this.$bus.$on('itemImageLoad',() => {
         this.$refs.topScroll.refresh()
+      })*/
+      const  refresh = this.debounce(this.$refs.topScroll.refresh(),200);
+      this.$bus.$on('itemImageLoad',() => {
+       refresh()
       })
     },
     methods: {
@@ -102,6 +106,15 @@
       loadMore() {
         console.log('加载更多')
         this.getHomeGoods1(this.currentType)
+      },
+      debounce(func,delay) {/*防抖函数*/
+        let timer = null;
+        return function (...args) {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => {
+            func.apply(this,args)
+          },delay)
+        }
       },
 
       /*网络请求相关的方法*/
