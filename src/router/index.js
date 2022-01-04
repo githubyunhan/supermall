@@ -7,6 +7,7 @@ const Home=()=>import('../views/home/Home')
 const Cart=()=>import( '../views/cart/Cart')
 const Category=()=>import('../views/category/Category')
 const Profile=()=>import('../views/profile/Profile')
+const Detail=()=>import('../views/detail/Detail')
 
 /*1.导入路由对*/
 Vue.use(VueRouter)
@@ -45,6 +46,13 @@ const routes= [
     component: Profile,
     meta:{//元数据
       title:'档案'
+    }
+  },
+  {
+    path: '/detail/:id',
+    component: Detail,
+    meta:{//元数据
+      title:'详情'
     }
   }
 ]

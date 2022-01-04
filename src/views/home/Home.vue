@@ -14,8 +14,9 @@
             @pullingUp="loadMore">
       <home-swiper :banners="banners"
                    @swiperImageLoad="swiperImageLoad"></home-swiper>
-      <recommend-view :recommends="recommends"></recommend-view>
-      <feature-view></feature-view>
+      <recommend-view :recommends="recommends"
+                      @recommendImageLoad="recommendImageLoad"></recommend-view>
+      <feature-view @featureImageLoad="featureImageLoad"></feature-view>
       <tab-control class="tab-control"
                    :titles="['流行','新款','精选']"
                    @tabControl="tabControl"
@@ -64,13 +65,25 @@
         currentType: 'pop',
         isShowBackTop: false,
         topOffsetTop: 0,
-        isTabFixed: false
+        isTabFixed: false,
+        swiperImage: false,
+        recommendImage: false,
+        featureImage:false,
+        saveY: 0
       }
     },
     computed: {
       showGoods() {
         return this.goods[this.currentType].list
       }
+    },
+    activated() {
+      this.$refs.topScroll.scrollTo(0,this.saveY,0);
+
+      this.$refs.topScroll.refresh()/*切换数据好，最好refresh一下*/
+    },
+    deactivated() {
+      this.saveY = this.$refs.topScroll.scroll.y
     },
     created() {
       /*1.请求多个数据*/
@@ -126,8 +139,18 @@
         this.getHomeGoods1(this.currentType)
       },
       swiperImageLoad() {
-        console.log(this.$refs.tabControl2.$el.offsetTop);
-        this.topOffsetTop= this.$refs.tabControl2.$el.offsetTop
+        /*console.log(this.$refs.tabControl2.$el.offsetTop);
+        this.topOffsetTop = this.$refs.tabControl2.$el.offsetTop*/
+        this.swiperImage = !this.swiperImage
+      },
+      recommendImageLoad(){
+        this.recommendImage = !this.recommendImage
+      },
+      featureImageLoad() {
+        this.featureImage = !this.featureImage;
+        if (this.swiperImage == true && this.recommendImage == true && this.recommendImage == true){
+          this.topOffsetTop = this.$refs.tabControl2.$el.offsetTop
+        }
       },
 
       /*网络请求相关的方法*/
