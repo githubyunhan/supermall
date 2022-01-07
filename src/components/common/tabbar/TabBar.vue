@@ -14,6 +14,7 @@
   #tab-bar {
     display: flex;/*水平放置*/
     background-color: #f6f6f6;
+    height: 49px;
 
     position: fixed;/*固定位置*/
     left: 0;
@@ -21,7 +22,8 @@
     bottom: 0;
 
     box-shadow: 0px -3px 1px rgba(100,100,100,.2);
+    border-top: 1px solid rgba(100,100,100,.1);
 
-    z-index: 10;
+    /*z-index: 10;*/
   }
 </style>

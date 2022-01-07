@@ -69,7 +69,8 @@
         swiperImage: false,
         recommendImage: false,
         featureImage:false,
-        saveY: 0
+        saveY: 0,
+        itemImageListener: null
       }
     },
     computed: {
@@ -83,7 +84,11 @@
       this.$refs.topScroll.refresh()/*切换数据好，最好refresh一下*/
     },
     deactivated() {
+      /*保存y值*/
       this.saveY = this.$refs.topScroll.scroll.y
+
+      /*取消全局事件的监听*/
+      this.$bus.$off('itemImageLoad',this.itemImageListener)
     },
     created() {
       /*1.请求多个数据*/
@@ -100,9 +105,12 @@
         this.$refs.topScroll.refresh()
       })*/
       const  refresh = debounce(this.$refs.topScroll.refresh(),200);
-      this.$bus.$on('itemImageLoad',() => {
-       refresh()
-      })
+
+      /*对监听事件进行保存*/
+      this.itemImageListener = () => {
+        refresh()
+      }
+      this.$bus.$on('itemImageLoad',this.itemImageListener)
     },
     methods: {
       /*事件监听相关的方法*/
@@ -166,7 +174,7 @@
         getHomeGoods(type,page).then(res => {
           this.goods[type].list.push(...res.data.list);
           this.goods[type].page +=1;
-
+          //console.log(res)
           this.$refs.topScroll.finishPullUp()
         })
       }
