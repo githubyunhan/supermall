@@ -10,6 +10,7 @@
       <detail-comment-info :comment-info="commentInfo" ref="comment"></detail-comment-info>
       <goods-list :goods="recommendInfo" ref="recommend"/>
     </scroll>
+    <detail-bottom-bar></detail-bottom-bar>
   </div>
 </template>
 
@@ -22,6 +23,7 @@
   import DetailParamInfo from './childComps/DetailParamInfo'
   import DetailCommentInfo from './childComps/DetailCommentInfo'
   import GoodsList from 'components/content/goods/GoodsList'
+  import DetailBottomBar from './childComps/DetailBottomBar'
 
   import Scroll from 'components/common/scroll/Scroll'
 
@@ -39,6 +41,7 @@
       DetailParamInfo,
       DetailCommentInfo,
       GoodsList,
+      DetailBottomBar,
       Scroll
     },
     data() {
@@ -95,7 +98,7 @@
       })
 
       /*4.给getThemeTopY赋值(对给this.getThemeTopY赋值的操作进行防抖操作)*/
-      this.getThemeTopY = debounce(() => {
+      /*this.getThemeTopY = debounce(() => {
         this.themeTopYs = []
 
         this.themeTopYs.push(0)
@@ -103,7 +106,7 @@
         this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
         this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
         console.log(this.themeTopYs);
-      })
+      })*/
     },
     mounted() {
       const  refresh = debounce(this.$refs.scroll.refresh(),200);
@@ -112,14 +115,14 @@
       }
       this.$bus.$on('itemImageLoad',this.itemImageListener)
     },
-    /*updated() {
+    updated() {
       this.themeTopYs = []
 
       this.themeTopYs.push(0)
       this.themeTopYs.push(this.$refs.params.$el.offsetTop)
       this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
       this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
-    },*/
+    },
     destroyed() {
       this.$bus.$off('itemImageLoad',this.itemImageListener)
     },
