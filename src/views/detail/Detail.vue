@@ -10,7 +10,8 @@
       <detail-comment-info :comment-info="commentInfo" ref="comment"></detail-comment-info>
       <goods-list :goods="recommendInfo" ref="recommend"/>
     </scroll>
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -26,6 +27,7 @@
   import DetailBottomBar from './childComps/DetailBottomBar'
 
   import Scroll from 'components/common/scroll/Scroll'
+  import BackTop from 'components/content/backTop/BackTop'
 
   import {getDetail,Goods,Shop,GoodsParam,getRecommend} from 'network/detail'
   import {debounce} from 'common/utils'
@@ -42,7 +44,8 @@
       DetailCommentInfo,
       GoodsList,
       DetailBottomBar,
-      Scroll
+      Scroll,
+      BackTop
     },
     data() {
       return {
@@ -57,7 +60,8 @@
         itemImageListener: null,
         themeTopYs: [],
         getThemeTopY: null,
-        currentIndex: 0
+        currentIndex: 0,
+        isShowBackTop: false
       }
     },
     created() {
@@ -136,6 +140,9 @@
         //console.log(index);
         this.$refs.scroll.scrollTo(0,-this.themeTopYs[index],100)
       },
+      backClick() {
+        this.$refs.scroll.scrollTo(0,0);
+      },
       scrollPosition(position) {
         //console.log(position);
         /*1.获取y值*/
@@ -152,6 +159,26 @@
             this.$refs.nav.currentIndex = this.currentIndex
           }
         }
+
+        /*3.是否显示回到顶部*/
+        this.isShowBackTop = (-position.y) > 1000;
+      },
+
+      addToCart() {
+        console.log('加入到购物车');
+        /*1.获取购物车展示的信息*/
+        const product = {};
+        product.image = this.topImages[0];
+        product.title = this.goodsInfo.title;
+        product.desc = this.goodsInfo.desc;
+        product.price = this.goodsInfo.price;
+        /*必传，商品的唯一标识iid*/
+        product.iid = this.iid;
+
+        /*2.将商品添加到购物车中*/
+        /*this.$store.cartList.push(product)/!*不建议这样属性*!/*/
+        //this.$store.commit('addCart1',product)
+        this.$store.dispatch('addCart2')
       }
     }
   }

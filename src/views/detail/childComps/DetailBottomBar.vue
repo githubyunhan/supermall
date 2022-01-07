@@ -18,13 +18,19 @@
       <div class="cart" @click="addToCart">加入购物车</div>
       <div class="buy">购买</div>
     </div>
-    <sport-ball ref="ball" class="sport-ball"></sport-ball>
+    <!--<sport-ball ref="ball" class="sport-ball"></sport-ball>-->
   </div>
 </template>
 
 <script>
   export default {
-    name: "DetailBottomBar"
+    name: "DetailBottomBar",
+    methods: {
+      addToCart() {
+        //console.log('加购物车');
+        this.$emit('addCart')
+      }
+    }
   }
 </script>
 
