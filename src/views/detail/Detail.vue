@@ -186,14 +186,7 @@
         //this.$store.commit('addCart1',product)
         /*dispatch函数可以返回Promise类型结果，需在dispatch对应的action中的方法里返回Promise对象*/
         this.$store.dispatch('addCart2',product).then(res => {
-          console.log(res);
-          this.show = true
-          this.message = res
-
-          setTimeout(() => {
-            this.show = false
-            this.message = ''
-          },1500)
+          this.$toast.show(res,2000)
         })
       }
     }
