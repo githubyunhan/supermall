@@ -47,5 +47,4 @@
     color: #fff;
     /*font-weight: 700;*/
   }
-
 </style>
