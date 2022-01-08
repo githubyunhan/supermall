@@ -30,7 +30,7 @@
         this.$bus.$emit('itemImageLoad')/*通过事件总线,发射图片加载完成事件*/
       },
       itemClick() {
-        console.log('跳转到详情页');
+        //console.log('跳转到详情页');
         this.$router.push('/detail/' + this.goodsItem.iid)
       }
     }

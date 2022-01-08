@@ -174,11 +174,11 @@
         product.price = this.goodsInfo.price;
         /*必传，商品的唯一标识iid*/
         product.iid = this.iid;
-
+        //console.log(this.iid);
         /*2.将商品添加到购物车中*/
         /*this.$store.cartList.push(product)/!*不建议这样属性*!/*/
         //this.$store.commit('addCart1',product)
-        this.$store.dispatch('addCart2')
+        this.$store.dispatch('addCart2',product)
       }
     }
   }

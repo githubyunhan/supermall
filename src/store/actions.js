@@ -1,6 +1,7 @@
 export default {
-  addCart1(context,payload) {
+  addCart2(context,payload) {
     /*1.查找之前数组中是否有该商品*/
+    console.log(payload.iid);
     let oldProduct = context.state.cartList.find(item => item.iid === payload.iid);
 
     /*2.判断oldProduct*/
