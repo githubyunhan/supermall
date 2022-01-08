@@ -12,6 +12,7 @@
     </scroll>
     <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+    <toast :message="message" :show="show"></toast>
   </div>
 </template>
 
@@ -32,6 +33,8 @@
   import {getDetail,Goods,Shop,GoodsParam,getRecommend} from 'network/detail'
   import {debounce} from 'common/utils'
 
+  import Toast from 'components/common/toast/Toast'
+
   export default {
     name: "Detail",
     components: {
@@ -45,7 +48,8 @@
       GoodsList,
       DetailBottomBar,
       Scroll,
-      BackTop
+      BackTop,
+      Toast
     },
     data() {
       return {
@@ -61,7 +65,9 @@
         themeTopYs: [],
         getThemeTopY: null,
         currentIndex: 0,
-        isShowBackTop: false
+        isShowBackTop: false,
+        message: '',
+        show: false
       }
     },
     created() {
@@ -178,7 +184,17 @@
         /*2.将商品添加到购物车中*/
         /*this.$store.cartList.push(product)/!*不建议这样属性*!/*/
         //this.$store.commit('addCart1',product)
-        this.$store.dispatch('addCart2',product)
+        /*dispatch函数可以返回Promise类型结果，需在dispatch对应的action中的方法里返回Promise对象*/
+        this.$store.dispatch('addCart2',product).then(res => {
+          console.log(res);
+          this.show = true
+          this.message = res
+
+          setTimeout(() => {
+            this.show = false
+            this.message = ''
+          },1500)
+        })
       }
     }
   }
